@@ -1,0 +1,16 @@
+[
+    {
+      "id": "bounty1",
+      "name": "Bounty 1",
+      "description": "Complete a special task",
+      "points": 200
+    },
+    {
+      "id": "bounty2",
+      "name": "Bounty 2",
+      "description": "Complete a challenging mission",
+      "points": 300
+    },
+    ...
+  ]
+  

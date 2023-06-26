@@ -1,0 +1,15 @@
+[
+  {
+    "id": "upcoming1",
+    "name": "Upcoming Mission 1",
+    "description": "A sneak peek of a future mission",
+    "date": "2023-07-01"
+  },
+  {
+    "id": "upcoming2",
+    "name": "Upcoming Mission 2",
+    "description": "Another exciting mission coming soon",
+    "date": "2023-07-15"
+  },
+  ...
+]

@@ -1,0 +1,16 @@
+{
+      "id": "1",
+      "name": "John Doe",
+      "leaderboardRank": 1,
+      "earnedNFTs": ["nft1", "nft2"],
+      "acceptedBounties": ["bounty1"],
+      "acceptedMissions": ["mission1", "mission2"]
+    },
+    {
+      "id": "2",
+      "name": "Jane Smith",
+      "leaderboardRank": 2,
+      "earnedNFTs": ["nft3"],
+      "acceptedBounties": [],
+      "acceptedMissions": ["mission1"]
+    }
