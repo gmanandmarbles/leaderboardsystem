@@ -70,23 +70,29 @@ async function syncDatabaseWithJSON() {
     });
 
     console.log('Database synchronized with the JSON file.');
+
+    // After synchronizing, update the JSON file with the latest data
+    syncJSONWithDatabase();
   } catch (err) {
     console.error('Error retrieving user data from the database:', err);
   }
 }
 
 // Function to synchronize the JSON file with the database
+// Function to synchronize the JSON file with the database
 function syncJSONWithDatabase() {
-  fs.writeFile('./users.json', JSON.stringify(existingUsers), (err) => {
-    if (err) {
-      console.error('Error writing to users.json:', err);
-    } else {
-      console.log('JSON file synchronized with the database.');
-    }
-  });
-}
+    const updatedUsersData = JSON.stringify(existingUsers);
+    fs.appendFileSync('./users.json', updatedUsersData, (err) => {
+      if (err) {
+        console.error('Error appending to users.json:', err);
+      } else {
+        console.log('JSON file synchronized with the database.');
+      }
+    });
+  }
+  
 
-// Initial synchronization
+// Perform initial synchronization on startup
 syncDatabaseWithJSON();
 
 // Watch for changes in the users.json file
