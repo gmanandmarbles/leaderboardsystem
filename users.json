@@ -1,7 +1,7 @@
 [
   {
     "id": "2",
-    "usernamename": "Jane Smith",
+    "username": "Jane Smith",
     "password": "$2y$10$SfhYIDtn.iOuCW7zfoFLuuZHX6lja4lF4XA4JqNmpiH/.P3zB8JCa",
     "email": "jane.smith@mail.com",
     "bounties": [],
