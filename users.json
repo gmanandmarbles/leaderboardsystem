@@ -1,18 +1,12 @@
 [
   {
-    "id": "1",
-    "name": "John Doe",
-    "leaderboardPosition": 1,
-    "nfts": ["nft1", "nft2"],
-    "acceptedBounties": ["bounty1"],
-    "bounties": ["mission1", "mission2"]
-  },
-  {
     "id": "2",
-    "name": "Jane Smith",
-    "leaderboardPosition": 2,
-    "nfts": ["nft3"],
+    "usernamename": "Jane Smith",
+    "password": "$2y$10$SfhYIDtn.iOuCW7zfoFLuuZHX6lja4lF4XA4JqNmpiH/.P3zB8JCa",
+    "email": "jane.smith@mail.com",
     "bounties": [],
-    "missions": ["mission1"]
+    "leaderboardPosition": 2,
+    "missions": ["mission1"],
+    "nfts": ["nft3"]
   }
 ]
