@@ -67,25 +67,52 @@ connection.connect((err) => {
 });
 
 // Watch for changes in the users.json file
+// Watch for changes in the users.json file
 fs.watch('./users.json', (eventType) => {
-  if (eventType === 'change') {
-    // Read the updated users data from the users.json file
-    const updatedUsersData = fs.readFileSync('./users.json', 'utf8');
-    const updatedUsers = JSON.parse(updatedUsersData);
-
-    // Loop through the updated users and update the corresponding database records
-    updatedUsers.forEach((user) => {
-      const { id, username, password, email, bounties, leaderboardPosition, missions, nfts } = user;
-
-      // Update the database records with the updated user data
-      const query = `UPDATE accounts SET username = '${username}', password = '${password}', email = '${email}' WHERE id = ${id}`;
-      connection.query(query, (err, results) => {
-        if (err) {
-          console.error(`Error updating user ${id} in the database:`, err);
-        }
+    if (eventType === 'change') {
+      // Read the updated users data from the users.json file
+      const updatedUsersData = fs.readFileSync('./users.json', 'utf8');
+      const updatedUsers = JSON.parse(updatedUsersData);
+  
+      // Loop through the updated users and update the corresponding database records
+      updatedUsers.forEach((user) => {
+        const { id, username, password, email, bounties, leaderboardPosition, missions, nfts } = user;
+  
+        // Update the database records with the updated user data
+        const query = `
+          UPDATE accounts
+          SET username = '${username}', password = '${password}', email = '${email}'
+          WHERE id = ${id}`;
+        connection.query(query, (err, results) => {
+          if (err) {
+            console.error(`Error updating user ${id} in the database:`, err);
+          }
+        });
       });
-    });
-
+  
+      console.log('Database records updated with the changes from users.json.');
+  
+      // Fetch the latest data from the database after updating the records
+      connection.query('SELECT * FROM accounts', (err, results) => {
+        if (err) {
+          console.error('Error retrieving user data:', err);
+          return;
+        }
+  
+        // Map the fetched data to the existingUsers object
+        const existingUsers = results.map((row) => {
+          const { id, username, password, email } = row;
+          return { id, username, password, email };
+        });
+  
+        // Write the updated user data back to the users.json file
+        fs.writeFileSync('./users.json', JSON.stringify(existingUsers));
+  
+        console.log('Users data synchronized successfully.');
+      });
+    }
+  });
+  
     console.log('Database records updated with the changes from users.json.');
   }
 });
