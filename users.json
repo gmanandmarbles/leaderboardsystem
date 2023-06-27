@@ -1,12 +1,1 @@
-[
-  {
-    "id": "2",
-    "username": "Jane Smith",
-    "password": "$2y$10$SfhYIDtn.iOuCW7zfoFLuuZHX6lja4lF4XA4JqNmpiH/.P3zB8JCa",
-    "email": "jane.smith@mail.com",
-    "bounties": [],
-    "leaderboardPosition": 2,
-    "missions": ["mission1"],
-    "nfts": ["nft  3"]
-  }
-]
+[{"username":"test","password":"$2a$10$YGY/PCyDtkC7dPExCRLg4ei8vZ09QXGACYAfqisooebLW5LA1MWzG","name":"John Doe","age":25,"gender":"Male","skills":["JavaScript","HTML","CSS"],"hobbies":["Reading","Gaming","Music"],"school":"ABC University","residentialArea":"City XYZ","passionateAbout":"Web Development","avatar":{"profilePhoto":"https://example.com/profile_photo.jpg","bio":"I'm a web developer passionate about creating amazing web experiences."},"id":"78e3a3ba-fae7-4538-af00-cf4b356e3caf"}]
