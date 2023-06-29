@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>NFT Library</title>
+  <style>
+    .nft-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      grid-gap: 20px;
+    }
+
+    .nft-item {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .nft-item img {
+      max-width: 100%;
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="nft-grid" id="nftGrid"></div>
+
+  <script>
+    // Fetch NFT data from the server
+    fetch('/api/nfts')
+      .then(response => response.json())
+      .then(nfts => {
+        const nftGrid = document.getElementById('nftGrid');
+
+        // Iterate over each NFT and create a grid item
+        nfts.forEach(nft => {
+          const nftItem = document.createElement('div');
+          nftItem.classList.add('nft-item');
+
+          const nftName = document.createElement('h3');
+          nftName.textContent = nft.name;
+          nftItem.appendChild(nftName);
+
+          const nftImage = document.createElement('img');
+          nftImage.src = nft.image;
+          nftItem.appendChild(nftImage);
+
+          const nftDate = document.createElement('p');
+          nftDate.textContent = 'Date: ' + nft.date;
+          nftItem.appendChild(nftDate);
+
+          // Add the NFT grid item to the grid container
+          nftGrid.appendChild(nftItem);
+        });
+      })
+      .catch(error => {
+        console.error('Error fetching NFT data:', error);
+      });
+  </script>
+</body>
+</html>

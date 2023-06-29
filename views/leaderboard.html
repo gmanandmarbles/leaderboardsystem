@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Leaderboard</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    
+    th, td {
+      text-align: left;
+      padding: 8px;
+    }
+    
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+  <h1>Leaderboard</h1>
+  <table id="leaderboard-table">
+    <thead>
+      <tr>
+        <th>Rank</th>
+        <th>Name</th>
+        <th>Points</th>
+        <th>Avatar</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+  <script>
+    // Fetch leaderboard data from the server
+    fetch('/api/leaderboards')
+      .then(response => response.json())
+      .then(data => {
+        const leaderboardTable = document.getElementById('leaderboard-table');
+        const leaderboardBody = leaderboardTable.querySelector('tbody');
+
+        // Iterate over the leaderboard entries and create table rows
+        data.forEach((entry, index) => {
+          const row = document.createElement('tr');
+
+          const rankCell = document.createElement('td');
+          rankCell.textContent = index + 1;
+          row.appendChild(rankCell);
+
+          const nameCell = document.createElement('td');
+          nameCell.textContent = entry.name;
+          row.appendChild(nameCell);
+
+          const pointsCell = document.createElement('td');
+          pointsCell.textContent = entry.points;
+          row.appendChild(pointsCell);
+
+          const avatarCell = document.createElement('td');
+          const avatarImage = document.createElement('img');
+          avatarImage.src = entry.avatar;
+          avatarImage.alt = entry.name;
+          avatarImage.style.width = '50px';
+          avatarImage.style.height = '50px';
+          avatarCell.appendChild(avatarImage);
+          row.appendChild(avatarCell);
+
+          leaderboardBody.appendChild(row);
+        });
+      })
+      .catch(error => console.log(error));
+  </script>
+</body>
+</html>

@@ -30,10 +30,16 @@ app.get('/api/bounties', (req, res) => {
 });
 
 app.get('/api/leaderboards', (req, res) => {
-  const users = JSON.parse(fs.readFileSync('./users.json'));
+  const users = JSON.parse(fs.readFileSync('./leaderboards.json'));
   const sortedUsers = users.sort((a, b) => b.points - a.points);
   res.json(sortedUsers);
 });
+
+app.get('/api/nfts', (req, res) => {
+  const nfts = JSON.parse(fs.readFileSync('./nfts.json'));
+  res.json(nfts);
+});
+
 
 app.get('/api/upcoming-missions', (req, res) => {
   const upcomingMissions = JSON.parse(fs.readFileSync('./upcomingMissions.json'));
@@ -79,7 +85,7 @@ app.post('/api/users', async (req, res) => {
       users.push(newUser);
 
       // Save the updated users array to the JSON file
-      fs.writeFileSync('./users.json', JSON.stringify(users));
+      fs.writeFileSync('./users.json', JSON.stringify(users, null, 2));
 
       console.log('User registration successful:', newUser);
 
@@ -217,6 +223,104 @@ app.get('/', (req, res) => {
 app.get('/index', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'index.html'));
 });
+app.get('/missions', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'missions.html'));
+});
+app.get('/nft', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'nft.html'));
+});
+app.get('/leaderboard', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'leaderboard.html'));
+});
+
+app.get('/api/search', (req, res) => {
+  const { query } = req.query;
+  const missions = JSON.parse(fs.readFileSync('./missions.json'));
+  const upcomingMissions = JSON.parse(fs.readFileSync('./upcomingMissions.json'));
+
+  // Filter missions based on matching keywords
+  const filteredMissions = missions.filter((mission) =>
+    mission.keywords.some((keyword) => keyword.includes(query))
+  );
+
+  // Filter upcoming missions based on matching keywords
+  const filteredUpcomingMissions = upcomingMissions.filter((mission) =>
+    mission.keywords.some((keyword) => keyword.includes(query))
+  );
+
+  // Combine the filtered results
+  const searchResults = [...filteredMissions, ...filteredUpcomingMissions];
+
+  res.json(searchResults);
+});
+
+app.post('/api/addmission', (req, res) => {
+  const { missionId, playerId } = req.body;
+
+  // Read the users from the JSON file
+  const users = JSON.parse(fs.readFileSync('./users.json'));
+
+  // Find the user by ID
+  const user = users.find((user) => user.id === playerId);
+
+  if (!user) {
+    console.log('Player not found');
+    return res.status(404).json({ error: 'Player not found' });
+  }
+
+  // Add the mission ID to the user's completedMissions array
+  user.ongoingMissions.push(missionId);
+
+  // Save the updated users array to the JSON file
+  fs.writeFileSync('./users.json', JSON.stringify(users, null, 2));
+
+  res.json({ message: 'Mission added to player' });
+});
+
+app.post('/api/completemission', (req, res) => {
+  const { missionId, playerId } = req.body;
+
+  // Read the users from the JSON file
+  let users = JSON.parse(fs.readFileSync('./users.json'));
+
+  // Find the user by ID
+  const userIndex = users.findIndex((user) => user.id === playerId);
+
+  if (userIndex === -1) {
+    console.log('Player not found');
+    return res.status(404).json({ error: 'Player not found' });
+  }
+
+  // Add the mission ID to the user's completedMissions array
+  if (!users[userIndex].completedMissions) {
+    users[userIndex].completedMissions = []; // Initialize completedMissions array if it doesn't exist
+  }
+  users[userIndex].completedMissions.push(missionId);
+
+  // Save the updated users array to the JSON file
+  fs.writeFileSync('./users.json', JSON.stringify(users, null, 2));
+
+  res.json({ message: 'Mission added to player' });
+});
+
+app.post('/api/leaderboards', (req, res) => {
+  const leaderboardData = req.body;
+
+  // Assuming the leaderboardData is an array of leaderboard entries
+
+  // Read the existing leaderboard data from a file or database
+  const existingData = JSON.parse(fs.readFileSync('./leaderboards.json'));
+
+  // Append the new data to the existing leaderboard
+  const updatedData = existingData.concat(leaderboardData);
+
+  // Update the leaderboard in the server's memory or database
+  fs.writeFileSync('./leaderboards.json', JSON.stringify(updatedData, null, 2));
+
+  // Send a success response
+  res.json({ message: 'Leaderboard updated successfully' });
+});
+
 
 // Start the server
 app.listen(3000, () => {
