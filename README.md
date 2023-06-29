@@ -1,108 +1,112 @@
-# leaderboardsystem
- 
 
-## Description
+# LootLocker Game API Documentation
 
-The My API Server is a backend server built with Node.js and Express.js. It provides various API endpoints for retrieving and manipulating data related to missions, bounties, leaderboards, and user information. The server uses JSON files to store the data.
+Welcome to the documentation for the LootLocker Game API! This API allows game developers to access and manage game-related data such as missions, bounties, leaderboards, and more. This documentation will guide you through the different API endpoints and their functionalities. You don't need to be a technical expert to understand this guide, so let's get started!
 
-## Installation
+## Table of Contents
 
-To set up and run the My API Server, follow these steps:
+-   Introduction
+-   API Endpoints
+    -   Get Missions
+    -   Get Bounties
+    -   Get Leaderboards
+    -   Get NFTs
+    -   Get upcoming missions
+    -   Create User
+    -   User Login
+    -  User Dashboard
+    -  Get user Profile
+    -   Search missions
+    -   Add mission to user
+    -   Complete mission
+    -   Update leaderboard
 
-1.  Make sure you have Node.js installed on your machine.
-2.  Download or clone the code for the My API Server.
-3.  Open a terminal and navigate to the project directory.
-4.  Install the required dependencies by running the following command:
-    
-    Copy code
-    
-    `npm install` 
-    
-5.  Start the server by running the following command:
-    
-    sqlCopy code
-    
-    `npm start` 
-    
-    The server will be running on `http://localhost:3000`.
+## Introduction
+
+The LootLocker Game API provides a set of endpoints that allow game developers to interact with game-related data. This API is built using Node.js and utilizes the Express framework. You don't need to worry about the technical details; you just need to understand how to use the provided endpoints.
+
+To use the LootLocker Game API, you can send HTTP requests to the specified endpoints. The API will respond with the requested data or perform the requested action. The responses will be in JSON format, which is a common data format used in web APIs.
 
 ## API Endpoints
 
-### GET /api/missions
+### Get Missions
 
-Returns a JSON array of missions.
+Endpoint: `/api/missions` Method: GET
 
-### GET /api/bounties
+This endpoint allows you to retrieve a list of missions available in the game. Missions are challenges or tasks that players can undertake to progress in the game. When you send a GET request to this endpoint, the API will respond with a JSON array containing the mission data.
 
-Returns a JSON array of bounties.
+### Get Bounties
 
-### GET /api/leaderboards
+Endpoint: `/api/bounties` Method: GET
 
-Returns a JSON array of users sorted by points in descending order.
+Bounties are special missions that offer higher rewards and are typically more challenging. This endpoint allows you to retrieve a list of bounties available in the game. When you send a GET request to this endpoint, the API will respond with a JSON array containing the bounty data.
 
-### GET /api/upcoming-missions
+### Get Leaderboards
 
-Returns a JSON array of upcoming missions.
+Endpoint: `/api/leaderboards` Method: GET
 
-### POST /api/users
+Leaderboards track and display the top-performing players in the game based on various criteria, such as points or achievements. This endpoint allows you to retrieve the leaderboard data. When you send a GET request to this endpoint, the API will respond with a JSON array containing the leaderboard data, sorted in descending order.
 
-Creates a new user based on the provided data in the request body. Returns the created user object if successful.
+### Get NFTs
 
-### POST /api/login
+Endpoint: `/api/nfts` Method: GET
 
-Authenticates the user with the provided username and password. Sets an authentication cookie if successful.
+NFTs (Non-Fungible Tokens) are unique digital assets that can be owned and traded. This endpoint allows you to retrieve a list of NFTs available in the game. When you send a GET request to this endpoint, the API will respond with a JSON array containing the NFT data.
 
-### GET /dashboard
+### Get Upcoming Missions
 
-Renders the dashboard page with the user's data. Requires an authenticated user.
+Endpoint: `/api/upcoming-missions` Method: GET
 
-### GET /api/users/:userId
+Upcoming missions are missions that will be available in the game in the near future. This endpoint allows you to retrieve a list of upcoming missions. When you send a GET request to this endpoint, the API will respond with a JSON array containing the upcoming mission data.
 
-Returns the user profile information for the specified user ID.
+### Create User
 
-### GET /
+Endpoint: `/api/users` Method: POST
 
-Serves the login page.
+This endpoint allows players to create a new user account in the game. To create a user, you need to send a POST request to this endpoint with the required user data in the request body. The API will validate the user data and create a new user account. If successful, the API will respond with a success message and the user data.
 
-### GET /index
+### User Login
 
-Serves the index page.
+Endpoint: `/api/login` Method: POST
 
-## File Structure
+Once players have created a user account, they can use this endpoint to log in to the game. To log in, players need to send a POST request to this endpoint with their username and password in the request body. The API will validate the credentials and generate an authentication cookie. If the login is successful, the API will respond with a success message.
 
-The server code follows the following file structure:
+### User Dashboard
 
--   `index.js`: The main entry point for the server application.
--   `views`: Contains the HTML views for the login and index pages.
-    -   `login.html`: The login page HTML template.
-    -   `index.html`: The index page HTML template.
--   `missions.json`: JSON file containing missions data.
--   `bounties.json`: JSON file containing bounties data.
--   `users.json`: JSON file containing user data.
--   `upcomingMissions.json`: JSON file containing upcoming missions data.
+Endpoint: `/dashboard` Method: GET
 
-## Dependencies
+The user dashboard is a web page that provides an overview of the player's progress, achievements, and other relevant information. This endpoint allows authenticated users to access their dashboard. When a user sends a GET request to this endpoint, the API will respond with the user's dashboard page.
 
-The My API Server relies on the following dependencies:
+### Get User Profile
 
--   express: A fast and minimalist web framework for Node.js.
--   cors: Middleware for enabling Cross-Origin Resource Sharing (CORS).
--   body-parser: Middleware for parsing request bodies.
--   fs: File system module for reading JSON files.
--   path: Module for handling file paths.
--   uuid: Library for generating unique IDs.
--   bcryptjs: Library for hashing and comparing passwords.
--   cookie-parser: Middleware for parsing cookies.
+Endpoint: `/api/users/:userId` Method: GET
 
-## Usage
+This endpoint allows you to retrieve the profile of a specific user. You need to provide the user ID as a parameter in the URL. When you send a GET request to this endpoint, the API will respond with the user's profile data, including information such as username, name, age, gender, skills, hobbies, and more.
 
-You can use the My API Server to fetch and manipulate data related to missions, bounties, leaderboards, and user information. Use the provided API endpoints to interact with the server and retrieve the required data.
+### Search Missions
 
-Make sure to authenticate users using the `/api/login` endpoint and set the authentication cookie (`authenticated` and `userId`) in subsequent requests to access protected routes like `/dashboard`.
+Endpoint: `/api/search` Method: GET
 
-To customize the server behavior or extend its functionality, you can modify the existing endpoints or add new ones to suit your requirements.
+Sometimes players want to find missions or upcoming missions related to specific keywords. This endpoint allows you to search for missions based on keywords. You need to provide the query as a parameter in the URL. When you send a GET request to this endpoint, the API will respond with a JSON array containing the search results.
 
-Note: This documentation assumes basic familiarity with Node.js, Express.js, and RESTful APIs.
+### Add Mission to User
 
+Endpoint: `/api/addmission` Method: POST
 
-> Written with [StackEdit](https://stackedit.io/).
+When a player wants to start a mission, you can use this endpoint to add the mission to the player's ongoing missions. You need to send a POST request to this endpoint with the mission ID and the player ID in the request body. The API will update the user's ongoing missions and respond with a success message.
+
+### Complete Mission
+
+Endpoint: `/api/completemission` Method: POST
+
+When a player completes a mission, you can use this endpoint to mark the mission as completed for the player. You need to send a POST request to this endpoint with the mission ID and the player ID in the request body. The API will update the user's completed missions and respond with a success message.
+
+### Update Leaderboard
+
+Endpoint: `/api/leaderboards` Method: POST
+
+If you want to update the leaderboard with new data, you can use this endpoint. You need to send a POST request to this endpoint with the leaderboard data in the request body. The API will append the new data to the existing leaderboard and respond with a success message.
+
+----------
+
+That concludes the overview of the LootLocker Game API and its endpoints. You can use these endpoints to build game features and provide a seamless gaming experience to your players. If you have any further questions or need assistance, please feel free to reach out. Happy gaming!
