@@ -1,7 +1,7 @@
 
-# LootLocker Game API Documentation
+#  Game API Documentation
 
-Welcome to the documentation for the LootLocker Game API! This API allows game developers to access and manage game-related data such as missions, bounties, leaderboards, and more. This documentation will guide you through the different API endpoints and their functionalities. You don't need to be a technical expert to understand this guide, so let's get started!
+Welcome to the documentation for the  Game API! This API allows game developers to access and manage game-related data such as missions, bounties, leaderboards, and more. This documentation will guide you through the different API endpoints and their functionalities. You don't need to be a technical expert to understand this guide, so let's get started!
 
 ## Table of Contents
 
@@ -23,9 +23,9 @@ Welcome to the documentation for the LootLocker Game API! This API allows game d
 
 ## Introduction
 
-The LootLocker Game API provides a set of endpoints that allow game developers to interact with game-related data. This API is built using Node.js and utilizes the Express framework. You don't need to worry about the technical details; you just need to understand how to use the provided endpoints.
+The  Game API provides a set of endpoints that allow game developers to interact with game-related data. This API is built using Node.js and utilizes the Express framework. You don't need to worry about the technical details; you just need to understand how to use the provided endpoints.
 
-To use the LootLocker Game API, you can send HTTP requests to the specified endpoints. The API will respond with the requested data or perform the requested action. The responses will be in JSON format, which is a common data format used in web APIs.
+To use the  Game API, you can send HTTP requests to the specified endpoints. The API will respond with the requested data or perform the requested action. The responses will be in JSON format, which is a common data format used in web APIs.
 
 ## API Endpoints
 
@@ -109,4 +109,4 @@ If you want to update the leaderboard with new data, you can use this endpoint. 
 
 ----------
 
-That concludes the overview of the LootLocker Game API and its endpoints. You can use these endpoints to build game features and provide a seamless gaming experience to your players. If you have any further questions or need assistance, please feel free to reach out. Happy gaming!
+That concludes the overview of the  Game API and its endpoints. You can use these endpoints to build game features and provide a seamless gaming experience to your players. If you have any further questions or need assistance, please feel free to reach out. Happy gaming!
