@@ -103,54 +103,55 @@ app.post('/api/users', async (req, res) => {
         password: req.body.password,
         remember: true,
       };
-
       const lootLockerLoginHeaders = {
-        'domain-key': domainKey,
+        'domain-key': "8o396rj8",
         'is-development': isDevelopment.toString(),
-        'Content-Type': 'application/json',
       };
 
-      axios
-        .post(lootLockerLoginUrl, lootLockerLoginPayload, { headers: lootLockerLoginHeaders })
-        .then((response) => {
-          console.log('LootLocker login successful:', response.data);
-          // Handle successful login here
-
-          // Send success message and status number
-          res.status(200).json({
-            message: 'LootLocker login successful',
-            status: 200,
-            lootLockerData: response.data,
-          });
-
-          // Additional code to be executed after sending the response
-          // ...
-
-        })
-        .catch((error) => {
-          console.error('LootLocker login failed:', error.response.data);
-          // Handle login error here
-          res.status(500).json({
-            message: 'LootLocker login failed',
-            status: 500,
-            error: error.response.data,
-          });
-
-          // Additional code to be executed after sending the response
-          // ...
+      try {
+        const lootLockerLoginResponse = await axios.post(lootLockerLoginUrl, lootLockerLoginPayload, {
+          headers: lootLockerLoginHeaders,
         });
-    } catch (error) {
-      console.error('LootLocker user sign up failed:', error);
-      res.status(500).json({ error: 'Failed to sign up user' });
+        console.log('LootLocker user login successful:', lootLockerLoginResponse.data);
 
-      // Additional code to be executed after sending the response
-      // ...
+        // Implement the additional CURL request here
+        const lootLockerSessionUrl = 'https://api.lootlocker.io/game/v2/session/white-label';
+        const lootLockerSessionPayload = {
+          game_key: "prod_07d9e6ba9d514326a4471c49178474ce",
+          email: req.body.username,
+          token: lootLockerLoginResponse.data.token,
+          game_version: '0.10.0.0',
+        };
+        const lootLockerSessionHeaders = {
+          'Content-Type': 'application/json',
+        };
+
+        try {
+          const lootLockerSessionResponse = await axios.post(lootLockerSessionUrl, lootLockerSessionPayload, {
+            headers: lootLockerSessionHeaders,
+          });
+          console.log('LootLocker white-label session response:', lootLockerSessionResponse.data);
+
+          // Continue with user registration process and saving data
+          res.json({ message: 'User registered successfully' });
+        } catch (error) {
+          console.error('Error creating LootLocker session:', error);
+          res.status(500).json({ error: 'Failed to create LootLocker session' });
+        }
+      } catch (error) {
+        console.error('Error logging in LootLocker user:', error);
+        res.status(500).json({ error: 'Failed to log in LootLocker user' });
+      }
+    } catch (error) {
+      console.error('Error signing up user with LootLocker API:', error);
+      res.status(500).json({ error: 'Failed to sign up user with LootLocker API' });
     }
   } catch (error) {
-    console.error('User registration failed:', error);
-    res.status(500).json({ error: 'Failed to sign up user' });
+    console.error('Error registering user:', error);
+    res.status(500).json({ error: 'Failed to register user' });
   }
 });
+
 
 
 app.post('/api/login', async (req, res) => {
@@ -158,32 +159,31 @@ app.post('/api/login', async (req, res) => {
 
   const { username, password } = req.body;
 
-  try {
-    // Log in the user with LootLocker API
-    console.log('Logging in user with LootLocker API');
-    const loginUrl = 'https://api.lootlocker.io/white-label-login/login';
-    const loginPayload = {
-      email: username,
-      password: password,
-      remember: true,
-    };
-    const loginHeaders = {
-      'domain-key': domainKey,
-      'is-development': isDevelopment.toString(),
-      'Content-Type': 'application/json',
-    };
+  // Check if the user exists
+  const user = users.find((user) => user.username === username);
+  if (!user) {
+    console.log('User not found');
+    return res.status(404).json({ error: 'User not found' });
+  }
 
-    const loginResponse = await axios.post(loginUrl, loginPayload, { headers: loginHeaders });
+  // Check if the password is correct
+  const validPassword = await bcrypt.compare(password, user.password);
+  if (!validPassword) {
+    console.log('Invalid password');
+    return res.status(401).json({ error: 'Invalid password' });
+  }
 
-    // Set the authentication cookie
-    res.cookie('authenticated', true);
-    res.cookie('userId', loginResponse.data.id);
+  console.log('Login successful');
+  res.json({ message: 'Login successful' });
+});
 
-    console.log('Login successful');
-    res.status(200).json({ success: 'Login successful' });
-  } catch (error) {
-    console.error('Login failed:', error);
-    res.status(401).json({ error: 'Invalid credentials' });
+// Load users from the JSON file on server start
+fs.readFile('./users.json', 'utf8', (err, data) => {
+  if (err) {
+    console.error('Error reading users file:', err);
+  } else {
+    users = JSON.parse(data);
+    console.log('Users loaded successfully');
   }
 });
 
