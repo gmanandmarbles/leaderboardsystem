@@ -110,3 +110,245 @@ If you want to update the leaderboard with new data, you can use this endpoint. 
 ----------
 
 That concludes the overview of the  Game API and its endpoints. You can use these endpoints to build game features and provide a seamless gaming experience to your players. If you have any further questions or need assistance, please feel free to reach out. Happy gaming!
+
+## Unity API calls
+
+1.  Retrieve Missions:
+
+csharpCopy code
+
+`IEnumerator RetrieveMissions()
+{
+    UnityWebRequest www = UnityWebRequest.Get("http://api.example.com/api/missions");
+    yield return www.SendWebRequest();
+
+    if (www.result == UnityWebRequest.Result.Success)
+    {
+        string response = www.downloadHandler.text;
+        // Process the response data
+    }
+    else
+    {
+        Debug.Log("Error retrieving missions: " + www.error);
+    }
+}` 
+
+2.  Retrieve Bounties:
+
+csharpCopy code
+
+`IEnumerator RetrieveBounties()
+{
+    UnityWebRequest www = UnityWebRequest.Get("http://api.example.com/api/bounties");
+    yield return www.SendWebRequest();
+
+    if (www.result == UnityWebRequest.Result.Success)
+    {
+        string response = www.downloadHandler.text;
+        // Process the response data
+    }
+    else
+    {
+        Debug.Log("Error retrieving bounties: " + www.error);
+    }
+}` 
+
+3.  Retrieve Leaderboards:
+
+csharpCopy code
+
+`IEnumerator RetrieveLeaderboards()
+{
+    UnityWebRequest www = UnityWebRequest.Get("http://api.example.com/api/leaderboards");
+    yield return www.SendWebRequest();
+
+    if (www.result == UnityWebRequest.Result.Success)
+    {
+        string response = www.downloadHandler.text;
+        // Process the response data
+    }
+    else
+    {
+        Debug.Log("Error retrieving leaderboards: " + www.error);
+    }
+}` 
+
+4.  Retrieve NFTs:
+
+csharpCopy code
+
+`IEnumerator RetrieveNFTs()
+{
+    UnityWebRequest www = UnityWebRequest.Get("http://api.example.com/api/nfts");
+    yield return www.SendWebRequest();
+
+    if (www.result == UnityWebRequest.Result.Success)
+    {
+        string response = www.downloadHandler.text;
+        // Process the response data
+    }
+    else
+    {
+        Debug.Log("Error retrieving NFTs: " + www.error);
+    }
+}` 
+
+5.  Retrieve Upcoming Missions:
+
+csharpCopy code
+
+`IEnumerator RetrieveUpcomingMissions()
+{
+    UnityWebRequest www = UnityWebRequest.Get("http://api.example.com/api/upcoming-missions");
+    yield return www.SendWebRequest();
+
+    if (www.result == UnityWebRequest.Result.Success)
+    {
+        string response = www.downloadHandler.text;
+        // Process the response data
+    }
+    else
+    {
+        Debug.Log("Error retrieving upcoming missions: " + www.error);
+    }
+}` 
+
+Please note that you need to replace "[http://api.example.com](http://api.example.com/)" with the actual base URL of your server. Also, make sure to handle the response data according to your requirements within the respective `if (www.result == UnityWebRequest.Result.Success)` block.
+
+## /api/users
+
+Endpoint: /api/users
+Method: POST
+Parameters:
+
+lootlockerId (required): The LootLocker ID of the user.
+Description:
+This API endpoint is used to retrieve user data based on their LootLocker ID. It allows you to fetch information about a specific user in your application.
+
+Request Example:
+
+csharp
+Copy code
+IEnumerator RetrieveUserData(string lootlockerId)
+{
+    string url = "http://api.example.com/api/users";
+    
+    WWWForm form = new WWWForm();
+    form.AddField("lootlockerId", lootlockerId);
+
+    UnityWebRequest www = UnityWebRequest.Post(url, form);
+    yield return www.SendWebRequest();
+
+    if (www.result == UnityWebRequest.Result.Success)
+    {
+        string response = www.downloadHandler.text;
+        // Process the response data
+    }
+    else
+    {
+        Debug.Log("Error retrieving user data: " + www.error);
+    }
+}
+Response:
+The response will contain the user data in a JSON format. The specific structure and fields of the response will depend on your application's user system. You can parse the JSON response to extract the required information.
+
+Example Response:
+
+json
+Copy code
+{
+    "userId": "123456789",
+    "username": "JohnDoe",
+    "level": 10,
+    "coins": 500,
+    "inventory": [
+        {
+            "itemId": "987654321",
+            "itemName": "Sword",
+            "itemType": "Weapon"
+        },
+        {
+            "itemId": "456789123",
+            "itemName": "Shield",
+            "itemType": "Armor"
+        }
+    ],
+    "achievements": [
+        {
+            "achievementId": "789123456",
+            "achievementName": "Master of the Sword",
+            "progress": 50,
+            "totalProgress": 100
+        }
+    ]
+}
+Error Handling:
+If there is an error in retrieving the user data, the API will return an appropriate error response. Make sure to handle the error cases properly and provide appropriate feedback to the user or take necessary actions in your application.
+
+Please note that you need to replace "http://api.example.com" with the actual base URL of your server. Additionally, customize the request and response handling according to your application's requirements.
+
+
+# Setting up
+
+
+Sure! Here are the instructions to set up the server and a list of endpoints that connect to an HTML page:
+
+Install Node.js:
+
+Go to the official Node.js website (https://nodejs.org).
+Download the appropriate installer for your operating system.
+Run the installer and follow the installation instructions.
+Create a new directory for your server project.
+
+Open a terminal or command prompt and navigate to the directory you created.
+
+Initialize a new Node.js project:
+
+```
+npm init
+Follow the prompts to initialize the project and create a package.json file.
+```
+Install the required dependencies by running the following command:
+
+```
+npm install express cors body-parser fs path ejs bcryptjs cookie-parser axios
+Create a new file named server.js in your project directory.
+```
+
+Copy and paste the provided code into the server.js file.
+
+Create the required JSON files:
+
+Create an empty users.json file.
+Create missions.json, bounties.json, leaderboards.json, nfts.json, and upcomingMissions.json files with appropriate data.
+Customize the HTML files:
+
+Create the following HTML files in the views directory:
+login.html
+index.html
+missions.html
+nft.html
+leaderboard.html
+Customize these HTML files with your desired content.
+Start the server:
+
+Copy code
+node server.js
+The server should now be running on http://localhost:3000. You can access the HTML pages and interact with the API endpoints.
+
+List of API Endpoints:
+
+GET /api/missions: Retrieves the missions from missions.json.
+GET /api/bounties: Retrieves the bounties from bounties.json.
+GET /api/leaderboards: Retrieves the leaderboard data from leaderboards.json.
+GET /api/nfts: Retrieves the NFTs from nfts.json.
+GET /api/upcoming-missions: Retrieves the upcoming missions from upcomingMissions.json.
+POST /api/users: Registers a new user and saves their information in users.json.
+POST /api/login: Logs in a user by checking their credentials against the data in users.json.
+GET /api/users/:userId: Retrieves the user profile based on the provided userId.
+GET /api/search?query=<search_query>: Searches for missions and upcoming missions based on the provided query parameter.
+POST /api/addmission: Adds a mission to a player's ongoingMissions array in users.json.
+POST /api/completemission: Adds a mission to a player's completedMissions array in users.json.
+POST /api/leaderboards: Updates the leaderboard data by appending the provided data to leaderboards.json.
+These endpoints handle various functionalities like retrieving data, user registration and login, user profile retrieval, search, and updating leaderboard data. You can customize the functionality and endpoints according to your specific needs.
+

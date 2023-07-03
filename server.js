@@ -14,10 +14,6 @@ app.use(bodyParser.json());
 app.use(cors());
 const axios = require('axios');
 
-// LootLocker API Configuration
-const domainKey = '8o396rj8';
-const isDevelopment = false;
-
 // API endpoints
 app.get('/api/missions', (req, res) => {
   const missions = JSON.parse(fs.readFileSync('./missions.json'));
@@ -62,95 +58,32 @@ app.post('/api/users', async (req, res) => {
   }
 
   try {
-    // Sign up the user with LootLocker API
-    console.log('Signing up user with LootLocker API');
-    const signUpUrl = 'https://api.lootlocker.io/white-label-login/sign-up';
-    const signUpPayload = {
-      email: newUser.username,
-      password: newUser.password,
-    };
-    const signUpHeaders = {
-      'domain-key': domainKey,
-      'is-development': isDevelopment.toString(),
-    };
+    // Hash the password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newUser.password, salt);
 
-    try {
-      const signUpResponse = await axios.post(signUpUrl, signUpPayload, { headers: signUpHeaders });
-      console.log('LootLocker user sign up successful:', signUpResponse.data);
+    // Update the password with the hashed version
+    newUser.password = hashedPassword;
 
-      // Update the newUser object with LootLocker user ID
-      newUser.id = signUpResponse.data.id;
+    // Add the new user to the users array
+    users.push(newUser);
 
-      // Add the new user to the users array
-      users.push(newUser);
-
-      // Save the updated users array to the JSON file
-      fs.writeFileSync('./users.json', JSON.stringify(users, null, 2));
-
-      console.log('User registration successful:', newUser);
-
-      // Log the data being sent to LootLocker
-      console.log('Data sent to LootLocker:', {
-        email: req.body.username,
-        password: req.body.password,
-        remember: true,
-      });
-
-      // Send additional CURL request
-      const lootLockerLoginUrl = 'https://api.lootlocker.io/white-label-login/login';
-      const lootLockerLoginPayload = {
-        email: req.body.username,
-        password: req.body.password,
-        remember: true,
-      };
-      const lootLockerLoginHeaders = {
-        'domain-key': "8o396rj8",
-        'is-development': isDevelopment.toString(),
-      };
-
-      try {
-        const lootLockerLoginResponse = await axios.post(lootLockerLoginUrl, lootLockerLoginPayload, {
-          headers: lootLockerLoginHeaders,
-        });
-        console.log('LootLocker user login successful:', lootLockerLoginResponse.data);
-
-        // Implement the additional CURL request here
-        const lootLockerSessionUrl = 'https://api.lootlocker.io/game/v2/session/white-label';
-        const lootLockerSessionPayload = {
-          game_key: "prod_07d9e6ba9d514326a4471c49178474ce",
-          email: req.body.username,
-          token: lootLockerLoginResponse.data.token,
-          game_version: '0.10.0.0',
-        };
-        const lootLockerSessionHeaders = {
-          'Content-Type': 'application/json',
-        };
-
-        try {
-          const lootLockerSessionResponse = await axios.post(lootLockerSessionUrl, lootLockerSessionPayload, {
-            headers: lootLockerSessionHeaders,
-          });
-          console.log('LootLocker white-label session response:', lootLockerSessionResponse.data);
-
-          // Continue with user registration process and saving data
-          res.json({ message: 'User registered successfully' });
-        } catch (error) {
-          console.error('Error creating LootLocker session:', error);
-          res.status(500).json({ error: 'Failed to create LootLocker session' });
-        }
-      } catch (error) {
-        console.error('Error logging in LootLocker user:', error);
-        res.status(500).json({ error: 'Failed to log in LootLocker user' });
+    // Save the updated users array to the JSON file
+    fs.writeFile('./users.json', JSON.stringify(users, null, 2), (err) => {
+      if (err) {
+        console.error('Error writing users file:', err);
+        return res.status(500).json({ error: 'Internal server error' });
       }
-    } catch (error) {
-      console.error('Error signing up user with LootLocker API:', error);
-      res.status(500).json({ error: 'Failed to sign up user with LootLocker API' });
-    }
+    });
+
+    console.log('User registration successful:', newUser);
+    res.json({ message: 'User registration successful' });
   } catch (error) {
-    console.error('Error registering user:', error);
-    res.status(500).json({ error: 'Failed to register user' });
+    console.error('Error hashing password:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
+
 
 
 
