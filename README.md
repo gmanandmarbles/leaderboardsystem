@@ -352,3 +352,14 @@ POST /api/completemission: Adds a mission to a player's completedMissions array 
 POST /api/leaderboards: Updates the leaderboard data by appending the provided data to leaderboards.json.
 These endpoints handle various functionalities like retrieving data, user registration and login, user profile retrieval, search, and updating leaderboard data. You can customize the functionality and endpoints according to your specific needs.
 
+
+# HTML Endpoints
+GET / login
+
+GET /index Dashboard page
+
+GET /missions missions page
+
+GET /nft NFT hall of fame
+
+GET /leaderboard leaderboards
