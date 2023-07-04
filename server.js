@@ -3,16 +3,23 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
-const app = express();
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcryptjs');
 const cookieParser = require('cookie-parser');
+const axios = require('axios');
+const { Magic } = require('@magic-sdk/admin');
+
+const mAdmin = new Magic('sk_live_7A22E2EBF2AD1AA7'); // ✨
+const app = express();
 app.use(cookieParser());
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(bodyParser.json());
 app.use(cors());
-const axios = require('axios');
+const magic = new Magic("pk_live_D3E55D2DC0F2D6C3", {
+  network: 'mainnet'
+});
+
 
 // API endpoints
 app.get('/api/missions', (req, res) => {
@@ -35,7 +42,6 @@ app.get('/api/nfts', (req, res) => {
   const nfts = JSON.parse(fs.readFileSync('./nfts.json'));
   res.json(nfts);
 });
-
 
 app.get('/api/upcoming-missions', (req, res) => {
   const upcomingMissions = JSON.parse(fs.readFileSync('./upcomingMissions.json'));
@@ -75,17 +81,15 @@ app.post('/api/users', async (req, res) => {
         return res.status(500).json({ error: 'Internal server error' });
       }
     });
-
+    
     console.log('User registration successful:', newUser);
+    
     res.json({ message: 'User registration successful' });
   } catch (error) {
     console.error('Error hashing password:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
-
-
-
 
 app.post('/api/login', async (req, res) => {
   console.log('Received login request:', req.body);
@@ -98,7 +102,6 @@ app.post('/api/login', async (req, res) => {
     console.log('User not found');
     return res.status(404).json({ error: 'User not found' });
   }
-
   // Check if the password is correct
   const validPassword = await bcrypt.compare(password, user.password);
   if (!validPassword) {
@@ -107,6 +110,9 @@ app.post('/api/login', async (req, res) => {
   }
 
   console.log('Login successful');
+  res.cookie('userId', user.id, {
+    maxAge: 24 * 60 * 60 * 1000, // Set the cookie expiration time (e.g., 24 hours)
+  });
   res.json({ message: 'Login successful' });
 });
 
@@ -152,16 +158,31 @@ app.get('/api/users/:userId', (req, res) => {
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'login.html'));
 });
+app.get('/magic', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'magicAuth.html'));
+});
+app.get('/callback', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'callback.html'));
+});
+app.get('/logout', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'logout.html'));
+});
 
 app.get('/index', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'index.html'));
 });
+app.get('/register', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'register.html'));
+});
+
 app.get('/missions', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'missions.html'));
 });
+
 app.get('/nft', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'nft.html'));
 });
+
 app.get('/leaderboard', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'leaderboard.html'));
 });
@@ -201,7 +222,7 @@ app.post('/api/addmission', (req, res) => {
     return res.status(404).json({ error: 'Player not found' });
   }
 
-  // Add the mission ID to the user's completedMissions array
+  // Add the mission ID to the user's ongoingMissions array
   user.ongoingMissions.push(missionId);
 
   // Save the updated users array to the JSON file
@@ -235,7 +256,40 @@ app.post('/api/completemission', (req, res) => {
 
   res.json({ message: 'Mission added to player' });
 });
+app.post('/api/bounties', (req, res) => {
+  const newBounty = req.body;
 
+  // Read the bounties from the JSON file
+  const bounties = JSON.parse(fs.readFileSync('./bounties.json'));
+
+  // Assign a unique ID to the new bounty
+  newBounty.id = uuidv4();
+
+  // Add the new bounty to the bounties array
+  bounties.push(newBounty);
+
+  // Save the updated bounties array to the JSON file
+  fs.writeFileSync('./bounties.json', JSON.stringify(bounties, null, 2));
+
+  res.json({ message: 'Bounty added successfully', bounty: newBounty });
+});
+app.post('/api/missions', (req, res) => {
+  const newMission = req.body;
+
+  // Read the missions from the JSON file
+  const missions = JSON.parse(fs.readFileSync('./missions.json'));
+
+  // Assign a unique ID to the new mission
+  newMission.id = uuidv4();
+
+  // Add the new mission to the missions array
+  missions.push(newMission);
+
+  // Save the updated missions array to the JSON file
+  fs.writeFileSync('./missions.json', JSON.stringify(missions, null, 2));
+
+  res.json({ message: 'Mission added successfully', mission: newMission });
+});
 app.post('/api/leaderboards', (req, res) => {
   const leaderboardData = req.body;
 
@@ -252,6 +306,48 @@ app.post('/api/leaderboards', (req, res) => {
 
   // Send a success response
   res.json({ message: 'Leaderboard updated successfully' });
+});
+
+
+app.post('/api/nfts', (req, res) => {
+  const newNFT = req.body;
+
+  // Read the NFTs from the JSON file
+  const nfts = JSON.parse(fs.readFileSync('./nfts.json'));
+
+  // Assign a unique ID to the new NFT
+  newNFT.id = uuidv4();
+
+  // Add the new NFT to the NFTs array
+  nfts.push(newNFT);
+
+  // Save the updated NFTs array to the JSON file
+  fs.writeFileSync('./nfts.json', JSON.stringify(nfts, null, 2));
+
+  res.json({ message: 'NFT added successfully', nft: newNFT });
+});
+
+app.get('/api/upcoming-missions', (req, res) => {
+  const upcomingMissions = JSON.parse(fs.readFileSync('./upcomingMissions.json'));
+  res.json(upcomingMissions);
+});
+
+app.post('/api/upcoming-missions', (req, res) => {
+  const newMission = req.body;
+
+  // Read the upcoming missions from the JSON file
+  const upcomingMissions = JSON.parse(fs.readFileSync('./upcomingMissions.json'));
+
+  // Assign a unique ID to the new mission
+  newMission.id = uuidv4();
+
+  // Add the new mission to the upcoming missions array
+  upcomingMissions.push(newMission);
+
+  // Save the updated upcoming missions array to the JSON file
+  fs.writeFileSync('./upcomingMissions.json', JSON.stringify(upcomingMissions, null, 2));
+
+  res.json({ message: 'Upcoming mission added successfully', mission: newMission });
 });
 
 

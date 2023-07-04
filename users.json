@@ -1,7 +1,7 @@
 [
   {
     "username": "john_doe",
-    "password": "password",
+    "password": "$2a$10$YkO2qa9oXIUSMKu0Zw4sF.Yg6R1KoGwRTYcqboTMNyJyqAPsGplN2",
     "name": "John Doe",
     "age": 25,
     "gender": "Male",
@@ -30,138 +30,6 @@
       5,
       9
     ],
-    "id": 60912
-  },
-  {
-    "username": "john_dose",
-    "password": "password",
-    "name": "John Doe",
-    "age": 25,
-    "gender": "Male",
-    "skills": [
-      "programming",
-      "design"
-    ],
-    "hobbies": [
-      "reading",
-      "gaming"
-    ],
-    "school": "ABC University",
-    "residentialArea": "XYZ City",
-    "passionateAbout": "Technology",
-    "avatar": "avatar1.jpg",
-    "ongoingMissions": [
-      "mission1",
-      "mission2",
-      "upcoming1"
-    ],
-    "completedMissions": [
-      "mission1"
-    ],
-    "nftNumbers": [
-      1,
-      5,
-      9
-    ],
-    "id": 61035
-  },
-  {
-    "username": "john_dosse",
-    "password": "password",
-    "name": "John Doe",
-    "age": 25,
-    "gender": "Male",
-    "skills": [
-      "programming",
-      "design"
-    ],
-    "hobbies": [
-      "reading",
-      "gaming"
-    ],
-    "school": "ABC University",
-    "residentialArea": "XYZ City",
-    "passionateAbout": "Technology",
-    "avatar": "avatar1.jpg",
-    "ongoingMissions": [
-      "mission1",
-      "mission2",
-      "upcoming1"
-    ],
-    "completedMissions": [
-      "mission1"
-    ],
-    "nftNumbers": [
-      1,
-      5,
-      9
-    ],
-    "id": 61036
-  },
-  {
-    "username": "john_dossse",
-    "password": "password",
-    "name": "John Doe",
-    "age": 25,
-    "gender": "Male",
-    "skills": [
-      "programming",
-      "design"
-    ],
-    "hobbies": [
-      "reading",
-      "gaming"
-    ],
-    "school": "ABC University",
-    "residentialArea": "XYZ City",
-    "passionateAbout": "Technology",
-    "avatar": "avatar1.jpg",
-    "ongoingMissions": [
-      "mission1",
-      "mission2",
-      "upcoming1"
-    ],
-    "completedMissions": [
-      "mission1"
-    ],
-    "nftNumbers": [
-      1,
-      5,
-      9
-    ],
-    "id": 61037
-  },
-  {
-    "username": "john_dosssse",
-    "password": "password",
-    "name": "John Doe",
-    "age": 25,
-    "gender": "Male",
-    "skills": [
-      "programming",
-      "design"
-    ],
-    "hobbies": [
-      "reading",
-      "gaming"
-    ],
-    "school": "ABC University",
-    "residentialArea": "XYZ City",
-    "passionateAbout": "Technology",
-    "avatar": "avatar1.jpg",
-    "ongoingMissions": [
-      "mission1",
-      "mission2",
-      "upcoming1"
-    ],
-    "completedMissions": [
-      "mission1"
-    ],
-    "nftNumbers": [
-      1,
-      5,
-      9
-    ],
-    "id": 61038
+    "id":"1"
   }
 ]

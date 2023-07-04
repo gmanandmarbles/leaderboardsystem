@@ -3,6 +3,17 @@
 
 Welcome to the documentation for the  Game API! This API allows game developers to access and manage game-related data such as missions, bounties, leaderboards, and more. This documentation will guide you through the different API endpoints and their functionalities. You don't need to be a technical expert to understand this guide, so let's get started!
 
+# HTML page endpoints
+
+/ - Login page (login.html)
+/magic - Magic authentication page (magicAuth.html)
+/callback - Callback page (callback.html)
+/logout - Logout page (logout.html)
+/index - Index page (index.html)
+/register - Registration page (register.html)
+/missions - Missions page (missions.html)
+/nft - NFT page (nft.html)
+/leaderboard - Leaderboard page (leaderboard.html
 ## Table of Contents
 
 -   Introduction

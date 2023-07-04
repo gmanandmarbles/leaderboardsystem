@@ -16,6 +16,7 @@
     <button type="submit">Login</button>
   </form>
 
+
   <script>
     document.getElementById('login-form').addEventListener('submit', function(event) {
       event.preventDefault(); // Prevent form submission
@@ -40,7 +41,7 @@
       .then(function(response) {
         if (response.ok) {
           // Redirect to index.html after successful login
-          window.location.href = 'index';
+          window.location.href = 'magic';
         } else {
           // Display an error message
           alert('Invalid credentials. Please try again.');

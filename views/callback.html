@@ -3,11 +3,12 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Player Statistics</title>
+  <title>Merged Page</title>
+  <link rel="stylesheet" href="/css/main.css">
   <link rel="stylesheet" href="style.min.css">
   <style>
-    /* Reset default browser styles */
-    html, body, h1 {
+ /* Reset default browser styles */
+ html, body, h1 {
       margin: 0;
       padding: 0;
     }
@@ -15,8 +16,8 @@
     /* Global styles */
     body {
       font-family: Arial, sans-serif;
-      background-color: #f2f2f2;
-      color: #333333;
+      background-color: #171c28;
+      color: #ffffff;
     }
 
     .container {
@@ -34,10 +35,11 @@
 
     #stats-container {
       white-space: pre-wrap;
-      background-color: #ffffff;
+      background-color: #1c2331;
       padding: 20px;
       border-radius: 4px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
     }
 
     /* Styling for user statistics */
@@ -50,11 +52,13 @@
     .stats-label {
       font-weight: bold;
       width: 150px;
+      color: #b59dd9;
     }
 
     .stats-value {
       flex-grow: 1;
       margin-left: 10px;
+      color: #c4c4c4;
     }
 
     /* Error message styles */
@@ -76,28 +80,53 @@
       margin-top: 20px;
     }
 
-    @keyframes spin {
-      0% {
-        transform: rotate(0deg);
-      }
+    /* Collapsible MagicLink content */
+    .magic-content {
+      margin-bottom: 20px;
+    }
 
-      100% {
-        transform: rotate(360deg);
-      }
+    .magic-content h3 {
+      color: #b59dd9;
+      cursor: pointer;
+      margin-bottom: 5px;
+    }
+
+    .magic-content .magic-section {
+      display: none;
+      background-color: #1c2331;
+      padding: 10px;
+      border-radius: 4px;
+    }
+
+    /* Dark mode */
+    .dark-mode {
+      background-color: #171c28;
+      color: #ffffff;
     }
   </style>
-</head>
 
-<body>
-  <div class="container">
-    <h1>Player Statistics</h1>
+  <!-- Automatically handle auth callback using Magic! -->
 
-    <div id="stats-container">
-      <!-- Statistics will be dynamically populated here -->
-    </div>
-  </div>
+  <script
+    src="https://auth.magic.link/pnp/callback"
+    data-magic-publishable-api-key="pk_live_D3E55D2DC0F2D6C3">
+  </script>
+
+  <!-- Use data from Magic! -->
 
   <script>
+    window.addEventListener('@magic/ready', (e) => {
+      const { idToken, userMetadata, oauth } = e.detail;
+
+      const idTokenEl = document.getElementById('idToken');
+      const userMetadataEl = document.getElementById('userMetadata');
+      const oauthEl = document.getElementById('oauth');
+
+      idTokenEl.innerText = JSON.stringify(idToken, null, 2);
+      userMetadataEl.innerText = JSON.stringify(userMetadata, null, 2);
+      oauthEl.innerText = JSON.stringify(oauth, null, 2);
+    });
+
     // Function to format the user data
     function formatUserData(user) {
       let formattedData = '';
@@ -160,6 +189,38 @@
       }
     });
   </script>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Player Statistics</h1>
+
+    <div id="stats-container">
+      <!-- Statistics will be dynamically populated here -->
+    </div>
+
+    <div class="page">
+      <div class="data">
+        <label>window.Magic.user.getIdToken()</label>
+        <pre id="idToken">Loading...</pre>
+      </div>
+
+      <div class="data">
+        <label>window.Magic.user.getMetadata()</label>
+        <pre id="userMetadata">Loading...</pre>
+      </div>
+
+      <div class="data">
+        <label>window.Magic.oauth.getRedirectResult()</label>
+        <pre id="oauth">Loading...</pre>
+      </div>
+
+      <a href="/logout">Logout</a>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="/js/main.js"></script>
 </body>
 
 </html>
